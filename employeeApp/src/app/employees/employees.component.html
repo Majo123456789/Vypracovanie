@@ -1,0 +1,42 @@
+<!-- <div *ngIf="(state$ | async) as state">
+    <ul *ngIf="state.workers && state.workers.length > 0">
+      <li *ngFor="let employee of state.workers">
+        {{ employee.EmployeeName }}
+      </li>
+    </ul>
+  </div> -->
+
+@if (state$ | async; as state ) { @if (state.loading) {
+<div class="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading...</div>
+</div>
+} @else {
+<div class="employees-container">
+  <table class="employee-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Total Worked Hours</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="state$ | async as state">
+      <tr
+        *ngFor="let employee of state.workers"
+        [class.low-hours]="employee.WorkedHours < 100"
+      >
+        <td>{{ employee.EmployeeName || "[null - name not found]" }}</td>
+        <td>{{ employee.WorkedHours | number : "1.2-2" }}</td>
+        <td><button (click)="editEmployee(employee)">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+} }
+
+<div class="chart-container">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <canvas id="pieChart" width="400" height="400"></canvas>
+</div>
